@@ -1,0 +1,42 @@
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+*.egg-info/
+build/
+dist/
+
+# Node and frontend build output
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+.eslintcache
+
+# Uploaded data and generated artifacts
+uploads/
+storage/
+exports/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
