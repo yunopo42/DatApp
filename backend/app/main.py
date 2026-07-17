@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 
-app = FastAPI(title='DatApp API')
+from app.core.config import get_settings
 
-@app.get("/health" , tags=["health"])
-def health_check() -> dict[str , str]:
-    return {"status" : "ok"}
+
+settings = get_settings()
+app = FastAPI(title=settings.app_name)
+
+
+@app.get("/health", tags=["health"])
+def health_check() -> dict[str, str]:
+    return {"status": "ok"}
