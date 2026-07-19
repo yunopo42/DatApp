@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     app_env: Literal["development", "test", "production"] = "development"
     app_host: str = "0.0.0.0"
     app_port: int = Field(default=8000, ge=1, le=65535)
+    cors_allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     database_url: SecretStr
     auth_issuer: str | None = None
     auth_audience: str | None = None
@@ -24,6 +25,14 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [
+            origin.strip()
+            for origin in self.cors_allowed_origins.split(",")
+            if origin.strip()
+        ]
 
 
 @lru_cache

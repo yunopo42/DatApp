@@ -9,12 +9,11 @@ advanced analytics remain outside the current foundation.
 
 ## Technology stack
 
-- Frontend: React 19, TypeScript, Vite, and ESLint
+- Frontend: React 19, TypeScript, Vite, Tailwind CSS, and ESLint
 - Backend: Python 3.13, FastAPI, Pydantic, SQLAlchemy 2, and Alembic
 - Database: PostgreSQL 18 through Docker Compose
 - Quality: Ruff, Pytest, ESLint, TypeScript, and Vite production builds
 - Planned data processing: Polars, DuckDB, and OpenPyXL
-- Planned styling: Tailwind CSS
 
 ## Current foundation
 
@@ -26,7 +25,7 @@ advanced analytics remain outside the current foundation.
 - Provider-neutral OIDC access-token verification through cached JWKS
 - Safe first-login user provisioning and identity-conflict protection
 - Workspace-scoped repositories and role-aware project services
-- React and TypeScript development environment
+- Responsive React dashboard with live backend readiness status
 - Backend unit and PostgreSQL integration tests
 - Dockerized local PostgreSQL with persistent storage
 
