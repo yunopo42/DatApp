@@ -23,6 +23,7 @@ advanced analytics remain outside the current foundation.
 - Async SQLAlchemy engine and session factory
 - Alembic migration infrastructure
 - User, workspace, membership, and project domain models
+- Workspace-scoped repositories and role-aware project services
 - React and TypeScript development environment
 - Backend unit and PostgreSQL integration tests
 - Dockerized local PostgreSQL with persistent storage
@@ -122,7 +123,7 @@ npm run build
 3. PostgreSQL, SQLAlchemy, and Alembic foundation — completed
 4. Identity, workspace, and project data foundation — completed
 5. Authentication and authorization boundaries
-6. Project application services and API
+6. Project application services — service layer completed, API pending
 7. Secure CSV/XLSX upload and storage
 8. Dataset validation, preview, and column detection
 9. Data-quality profiling and basic statistics

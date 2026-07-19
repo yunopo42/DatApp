@@ -3,6 +3,17 @@
 The backend is a FastAPI application with typed configuration, async SQLAlchemy
 database access, Alembic migrations, and PostgreSQL-backed integration tests.
 
+## Application boundaries
+
+- `app/models`: persistence entities and relationships
+- `app/repositories`: workspace-scoped database queries
+- `app/services`: transaction-aware ownership and role rules
+- `app/api`: HTTP transport; currently health endpoints only
+
+Workspace creation also creates its owner membership in the same request
+transaction. Project reads are always scoped through workspace membership.
+Owner, admin, and editor roles may create projects; viewers are read-only.
+
 ## Setup
 
 Run from this `backend/` directory:

@@ -23,5 +23,5 @@ async_session_factory = async_sessionmaker(
 
 
 async def get_db_session() -> AsyncIterator[AsyncSession]:
-    async with async_session_factory() as session:
+    async with async_session_factory.begin() as session:
         yield session

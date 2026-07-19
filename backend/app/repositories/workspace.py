@@ -1,0 +1,47 @@
+from uuid import UUID
+
+from sqlalchemy import exists, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models import Workspace, WorkspaceMember
+
+
+class WorkspaceRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    def add(self, workspace: Workspace) -> None:
+        self._session.add(workspace)
+
+    async def slug_exists(self, slug: str) -> bool:
+        statement = select(exists().where(Workspace.slug == slug))
+        return bool(await self._session.scalar(statement))
+
+    async def get_for_member(
+        self,
+        workspace_id: UUID,
+        user_id: UUID,
+    ) -> Workspace | None:
+        statement = (
+            select(Workspace)
+            .join(
+                WorkspaceMember,
+                WorkspaceMember.workspace_id == Workspace.id,
+            )
+            .where(
+                Workspace.id == workspace_id,
+                WorkspaceMember.user_id == user_id,
+            )
+        )
+        return await self._session.scalar(statement)
+
+    async def get_membership(
+        self,
+        workspace_id: UUID,
+        user_id: UUID,
+    ) -> WorkspaceMember | None:
+        statement = select(WorkspaceMember).where(
+            WorkspaceMember.workspace_id == workspace_id,
+            WorkspaceMember.user_id == user_id,
+        )
+        return await self._session.scalar(statement)
