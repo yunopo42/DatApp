@@ -39,6 +39,9 @@ class WorkspaceService:
         await self._session.flush()
         return workspace
 
+    async def list_workspaces_for_user(self, user_id: UUID) -> list[Workspace]:
+        return await self._workspaces.list_for_member(user_id)
+
     async def get_workspace_for_user(
         self,
         *,

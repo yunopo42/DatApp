@@ -10,7 +10,7 @@ database access, Alembic migrations, and PostgreSQL-backed integration tests.
 - `app/services`: transaction-aware ownership and role rules
 - `app/auth`: provider-neutral OIDC token verification and identity data
 - `app/api`: HTTP transport and reusable authentication dependencies; currently
-  public health endpoints and the protected current-user endpoint
+  public health endpoints plus protected current-user and workspace endpoints
 
 Workspace creation also creates its owner membership in the same request
 transaction. Project reads are always scoped through workspace membership.
@@ -30,6 +30,10 @@ health endpoints remain available and any protected dependency returns a safe
 
 `GET /api/v1/auth/me` is the first protected endpoint. It returns the current
 local user's safe public profile and deliberately excludes the provider subject.
+
+`GET /api/v1/workspaces` lists only workspaces where the current user is a
+member. `POST /api/v1/workspaces` creates a workspace and its owner membership
+in one transaction. Workspace slugs use lowercase URL-safe characters.
 
 ## Setup
 

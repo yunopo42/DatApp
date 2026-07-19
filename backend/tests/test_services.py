@@ -113,6 +113,15 @@ async def run_service_scenario(suffix: str) -> None:
                 workspace_id=workspace.id,
                 user_id=owner.id,
             )
+            owner_workspaces = await workspace_service.list_workspaces_for_user(
+                owner.id
+            )
+            viewer_workspaces = await workspace_service.list_workspaces_for_user(
+                viewer.id
+            )
+            outsider_workspaces = await workspace_service.list_workspaces_for_user(
+                outsider.id
+            )
             viewer_project = await project_service.get_project_for_user(
                 project_id=project.id,
                 user_id=viewer.id,
@@ -123,6 +132,9 @@ async def run_service_scenario(suffix: str) -> None:
             )
 
             assert owner_workspace.id == workspace.id
+            assert [item.id for item in owner_workspaces] == [workspace.id]
+            assert [item.id for item in viewer_workspaces] == [workspace.id]
+            assert outsider_workspaces == []
             assert viewer_project.id == project.id
             assert [item.id for item in viewer_projects] == [project.id]
 

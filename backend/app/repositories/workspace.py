@@ -35,6 +35,18 @@ class WorkspaceRepository:
         )
         return await self._session.scalar(statement)
 
+    async def list_for_member(self, user_id: UUID) -> list[Workspace]:
+        statement = (
+            select(Workspace)
+            .join(
+                WorkspaceMember,
+                WorkspaceMember.workspace_id == Workspace.id,
+            )
+            .where(WorkspaceMember.user_id == user_id)
+            .order_by(Workspace.created_at.desc(), Workspace.id)
+        )
+        return list(await self._session.scalars(statement))
+
     async def get_membership(
         self,
         workspace_id: UUID,
