@@ -10,7 +10,7 @@ database access, Alembic migrations, and PostgreSQL-backed integration tests.
 - `app/services`: transaction-aware ownership and role rules
 - `app/auth`: provider-neutral OIDC token verification and identity data
 - `app/api`: HTTP transport and reusable authentication dependencies; currently
-  public health endpoints only
+  public health endpoints and the protected current-user endpoint
 
 Workspace creation also creates its owner membership in the same request
 transaction. Project reads are always scoped through workspace membership.
@@ -27,6 +27,9 @@ Set `AUTH_ISSUER`, `AUTH_AUDIENCE`, `AUTH_JWKS_URL`, and `AUTH_ALGORITHM` in the
 repository-root `.env` file after selecting an identity provider. Until then,
 health endpoints remain available and any protected dependency returns a safe
 `503` response. Real provider credentials and tokens must never be committed.
+
+`GET /api/v1/auth/me` is the first protected endpoint. It returns the current
+local user's safe public profile and deliberately excludes the provider subject.
 
 ## Setup
 

@@ -100,6 +100,7 @@ Local endpoints:
 - Backend API documentation: `http://127.0.0.1:8000/docs`
 - Liveness: `http://127.0.0.1:8000/health/live`
 - Readiness: `http://127.0.0.1:8000/health/ready`
+- Current authenticated user: `GET http://127.0.0.1:8000/api/v1/auth/me`
 
 ## Quality checks
 
