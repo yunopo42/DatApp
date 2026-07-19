@@ -23,13 +23,16 @@ advanced analytics remain outside the current foundation.
 - Async SQLAlchemy engine and session factory
 - Alembic migration infrastructure
 - User, workspace, membership, and project domain models
+- Provider-neutral OIDC access-token verification through cached JWKS
+- Safe first-login user provisioning and identity-conflict protection
 - Workspace-scoped repositories and role-aware project services
 - React and TypeScript development environment
 - Backend unit and PostgreSQL integration tests
 - Dockerized local PostgreSQL with persistent storage
 
-Authentication, project APIs, file upload, dataset analysis, and AI features are
-not implemented yet.
+An authentication boundary is implemented, but no managed identity provider is
+selected or configured yet. Protected project APIs, file upload, dataset
+analysis, and AI features are not implemented yet.
 
 ## Repository structure
 
@@ -122,7 +125,8 @@ npm run build
 2. Typed backend configuration and health checks — completed
 3. PostgreSQL, SQLAlchemy, and Alembic foundation — completed
 4. Identity, workspace, and project data foundation — completed
-5. Authentication and authorization boundaries
+5. Authentication and authorization boundaries — backend boundary completed,
+   provider integration and protected APIs pending
 6. Project application services — service layer completed, API pending
 7. Secure CSV/XLSX upload and storage
 8. Dataset validation, preview, and column detection

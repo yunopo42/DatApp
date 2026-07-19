@@ -12,3 +12,15 @@ class PermissionDeniedError(DomainError):
 
 class ConflictError(DomainError):
     """Raised when a requested unique resource already exists."""
+
+
+class AuthenticationError(DomainError):
+    """Raised when credentials or required identity claims are invalid."""
+
+
+class AuthConfigurationError(DomainError):
+    """Raised when managed authentication is not configured."""
+
+
+class AuthProviderUnavailableError(DomainError):
+    """Raised when signing keys cannot be obtained from the auth provider."""
