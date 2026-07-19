@@ -108,15 +108,15 @@ function App() {
   const isReady = serviceStatus === 'ready'
 
   return (
-    <div className="min-h-screen bg-[#f3f6f4] text-[#17211b] lg:grid lg:grid-cols-[248px_1fr]">
-      <aside className="hidden min-h-screen border-r border-[#dfe6e1] bg-[#10281d] px-4 py-5 text-white lg:flex lg:flex-col">
+    <div className="ai-shell min-h-screen bg-[#f8f5ff] text-[#251536] lg:grid lg:grid-cols-[248px_1fr]">
+      <aside className="hidden min-h-screen border-r border-[#45266d] bg-[linear-gradient(165deg,#160724_0%,#24103d_55%,#35145a_100%)] px-4 py-5 text-white lg:flex lg:flex-col">
         <div className="flex items-center gap-3 px-2">
-          <div className="grid size-10 place-items-center rounded-xl bg-[#d9f99d] text-[#153d27] shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+          <div className="ai-logo grid size-10 place-items-center rounded-xl text-white shadow-[0_8px_28px_rgba(168,85,247,0.4)]">
             <Icon name="sparkles" className="size-5" />
           </div>
           <div>
             <p className="text-lg font-semibold tracking-[-0.03em]">DatApp</p>
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#91aa9c]">Data workspace</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#bca8d3]">Data workspace</p>
           </div>
         </div>
 
@@ -129,72 +129,72 @@ function App() {
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
                 item.active
                   ? 'bg-white/12 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]'
-                  : 'cursor-not-allowed text-[#87a093]'
+                  : 'cursor-not-allowed text-[#a38bbd]'
               }`}
             >
               <Icon name={item.icon} className="size-[18px]" />
               {item.label}
-              {!item.active && <span className="ml-auto text-[9px] uppercase tracking-wider text-[#6f887b]">Soon</span>}
+              {!item.active && <span className="ml-auto text-[9px] uppercase tracking-wider text-[#80659d]">Soon</span>}
             </button>
           ))}
         </nav>
 
         <div className="mt-auto space-y-2">
-          <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#a8bbb1]">
+          <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#b9a7cb]">
             <Icon name="help" className="size-[18px]" /> Help center
           </button>
-          <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#a8bbb1]">
+          <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#b9a7cb]">
             <Icon name="settings" className="size-[18px]" /> Settings
           </button>
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3">
             <p className="text-xs font-medium text-white">Local development</p>
-            <p className="mt-1 text-[11px] leading-4 text-[#91aa9c]">Authentication provider setup is next.</p>
+            <p className="mt-1 text-[11px] leading-4 text-[#a792be]">Authentication provider setup is next.</p>
           </div>
         </div>
       </aside>
 
       <main className="min-w-0">
-        <header className="flex h-16 items-center justify-between border-b border-[#dfe6e1] bg-white/80 px-5 backdrop-blur md:px-8 lg:h-[76px]">
+        <header className="flex h-16 items-center justify-between border-b border-[#e6dcf2] bg-white/75 px-5 backdrop-blur-xl md:px-8 lg:h-[76px]">
           <div className="flex items-center gap-3 lg:hidden">
-            <div className="grid size-9 place-items-center rounded-xl bg-[#173e2a] text-[#d9f99d]">
+            <div className="ai-logo grid size-9 place-items-center rounded-xl text-white">
               <Icon name="sparkles" className="size-4" />
             </div>
             <span className="font-semibold">DatApp</span>
           </div>
           <div className="hidden lg:block">
             <p className="text-sm font-semibold">Overview</p>
-            <p className="text-xs text-[#718078]">Your data workspace at a glance</p>
+            <p className="text-xs text-[#7d6d8d]">Your data workspace at a glance</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 rounded-full border border-[#dce5df] bg-white px-3 py-1.5 text-xs font-medium text-[#526159] sm:flex">
+            <div className="hidden items-center gap-2 rounded-full border border-[#e3d7ef] bg-white/90 px-3 py-1.5 text-xs font-medium text-[#665575] shadow-[0_4px_20px_rgba(88,28,135,0.06)] sm:flex">
               <span className={`size-2 rounded-full ${isReady ? 'bg-[#3eb875]' : serviceStatus === 'checking' ? 'animate-pulse bg-amber-400' : 'bg-rose-500'}`} />
               {isReady ? 'Systems online' : serviceStatus === 'checking' ? 'Checking systems' : 'Service unavailable'}
             </div>
-            <button type="button" disabled className="rounded-xl bg-[#173e2a] px-4 py-2 text-xs font-semibold text-white opacity-60">
+            <button type="button" disabled className="ai-button rounded-xl px-4 py-2 text-xs font-semibold text-white opacity-60">
               Sign in soon
             </button>
           </div>
         </header>
 
         <div className="mx-auto max-w-[1440px] space-y-6 p-5 md:p-8 lg:p-10">
-          <section className="relative overflow-hidden rounded-[28px] bg-[#173e2a] p-6 text-white shadow-[0_18px_60px_rgba(23,62,42,0.16)] md:p-9">
-            <div className="absolute -right-12 -top-20 size-72 rounded-full border-[52px] border-[#d9f99d]/10" />
-            <div className="absolute bottom-[-90px] right-36 size-52 rounded-full bg-[#5cce91]/10 blur-2xl" />
+          <section className="ai-hero relative overflow-hidden rounded-[28px] p-6 text-white shadow-[0_24px_70px_rgba(88,28,135,0.3)] md:p-9">
+            <div className="ai-orbit absolute -right-12 -top-20 size-72 rounded-full border-[52px] border-white/10" />
+            <div className="ai-glow absolute bottom-[-90px] right-36 size-52 rounded-full bg-fuchsia-400/25 blur-3xl" />
             <div className="relative max-w-2xl">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#d9f99d]">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#f1dcff] backdrop-blur">
                 <Icon name="sparkles" className="size-3.5" /> Foundation ready
               </div>
               <h1 className="text-3xl font-semibold leading-tight tracking-[-0.04em] md:text-[44px]">
                 Turn messy data into clear decisions.
               </h1>
-              <p className="mt-4 max-w-xl text-sm leading-6 text-[#c1d1c8] md:text-base">
+              <p className="mt-4 max-w-xl text-sm leading-6 text-[#e3d7ec] md:text-base">
                 DatApp will bring upload, quality checks, statistics, and visual reports into one focused workspace.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
-                <a href="#getting-started" className="inline-flex items-center gap-2 rounded-xl bg-[#d9f99d] px-4 py-2.5 text-sm font-semibold text-[#173e2a] transition hover:bg-[#e6ffb7]">
+                <a href="#getting-started" className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#5b21b6] shadow-[0_8px_28px_rgba(30,10,60,0.2)] transition hover:-translate-y-0.5 hover:bg-[#f5e9ff]">
                   Explore the foundation <span aria-hidden="true">→</span>
                 </a>
-                <div className="flex max-w-full items-start gap-2 text-xs leading-5 text-[#9fb5aa]">
+                <div className="flex max-w-full items-start gap-2 text-xs leading-5 text-[#cfbde0]">
                   <Icon name="upload" className="mt-0.5 size-4 shrink-0" /> Dataset upload is the next product phase
                 </div>
               </div>
@@ -208,29 +208,29 @@ function App() {
               { label: 'Analyses', value: '0', helper: 'No runs yet', icon: 'activity' as const },
               { label: 'Data quality', value: '—', helper: 'Waiting for data', icon: 'chart' as const },
             ].map((item) => (
-              <article key={item.label} className="rounded-2xl border border-[#e0e7e2] bg-white p-5 shadow-[0_8px_30px_rgba(31,52,40,0.04)]">
+              <article key={item.label} className="ai-card rounded-2xl border border-[#e8dff2] bg-white/90 p-5 shadow-[0_10px_35px_rgba(76,29,149,0.06)] backdrop-blur">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-xs font-medium text-[#748078]">{item.label}</p>
+                    <p className="text-xs font-medium text-[#7c6d89]">{item.label}</p>
                     <p className="mt-2 text-3xl font-semibold tracking-[-0.04em]">{item.value}</p>
                   </div>
-                  <div className="grid size-10 place-items-center rounded-xl bg-[#eef5f0] text-[#2e6a49]">
+                  <div className="grid size-10 place-items-center rounded-xl bg-[#f1e9fb] text-[#7c3aed]">
                     <Icon name={item.icon} className="size-[18px]" />
                   </div>
                 </div>
-                <p className="mt-5 text-[11px] text-[#96a099]">{item.helper}</p>
+                <p className="mt-5 text-[11px] text-[#9a8ca7]">{item.helper}</p>
               </article>
             ))}
           </section>
 
           <section id="getting-started" className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-            <article className="rounded-2xl border border-[#e0e7e2] bg-white p-6 shadow-[0_8px_30px_rgba(31,52,40,0.04)]">
+            <article className="ai-card rounded-2xl border border-[#e8dff2] bg-white/90 p-6 shadow-[0_10px_35px_rgba(76,29,149,0.06)] backdrop-blur">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold tracking-[-0.02em]">Getting started</h2>
-                  <p className="mt-1 text-sm text-[#78847d]">The path from foundation to your first analysis.</p>
+                  <p className="mt-1 text-sm text-[#81738e]">The path from foundation to your first analysis.</p>
                 </div>
-                <span className="rounded-full bg-[#eef5f0] px-3 py-1 text-[11px] font-semibold text-[#36704f]">2 of 5 ready</span>
+                <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">2 of 5 ready</span>
               </div>
               <div className="mt-6 space-y-1">
                 {[
@@ -240,24 +240,24 @@ function App() {
                   { title: 'Create your first workspace', detail: 'Workspace and project screens will follow authentication.', done: false },
                   { title: 'Upload a dataset', detail: 'CSV and XLSX support comes after project APIs.', done: false },
                 ].map((step, index) => (
-                  <div key={step.title} className="flex gap-4 rounded-xl p-3 hover:bg-[#f7f9f7]">
-                    <div className={`grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold ${step.done ? 'bg-[#dff5e7] text-[#238451]' : 'border border-[#dfe5e1] text-[#87928b]'}`}>
+                  <div key={step.title} className="flex gap-4 rounded-xl p-3 hover:bg-[#faf7ff]">
+                    <div className={`grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold ${step.done ? 'bg-[#ecddff] text-[#7c3aed]' : 'border border-[#e4d9ef] text-[#9585a3]'}`}>
                       {step.done ? '✓' : index + 1}
                     </div>
                     <div>
                       <p className="text-sm font-semibold">{step.title}</p>
-                      <p className="mt-1 text-xs leading-5 text-[#7e8982]">{step.detail}</p>
+                      <p className="mt-1 text-xs leading-5 text-[#867990]">{step.detail}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </article>
 
-            <article className="rounded-2xl border border-[#e0e7e2] bg-white p-6 shadow-[0_8px_30px_rgba(31,52,40,0.04)]">
+            <article className="ai-card rounded-2xl border border-[#e8dff2] bg-white/90 p-6 shadow-[0_10px_35px_rgba(76,29,149,0.06)] backdrop-blur">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold tracking-[-0.02em]">System status</h2>
-                  <p className="mt-1 text-xs text-[#8b958f]">Last checked {lastChecked}</p>
+                  <p className="mt-1 text-xs text-[#91849c]">Last checked {lastChecked}</p>
                 </div>
                 <button
                   type="button"
@@ -269,7 +269,7 @@ function App() {
                     })
                   }}
                   aria-label="Refresh system status"
-                  className="grid size-9 place-items-center rounded-xl border border-[#dfe6e1] text-[#617069] transition hover:bg-[#f3f7f4]"
+                  className="grid size-9 place-items-center rounded-xl border border-[#e4daee] text-[#765d8a] transition hover:bg-[#f5effb]"
                 >
                   <Icon name="refresh" className={`size-4 ${serviceStatus === 'checking' ? 'animate-spin' : ''}`} />
                 </button>
@@ -285,15 +285,15 @@ function App() {
                       <span className={`size-2.5 rounded-full ${service.ready ? 'bg-[#3eb875] shadow-[0_0_0_4px_rgba(62,184,117,0.12)]' : serviceStatus === 'checking' ? 'animate-pulse bg-amber-400' : 'bg-rose-500'}`} />
                       <span className="text-sm font-medium">{service.label}</span>
                     </div>
-                    <span className="text-xs text-[#7c8981]">{service.status}</span>
+                    <span className="text-xs text-[#887a93]">{service.status}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 rounded-xl bg-[#f1f7f3] p-4">
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#306d4b]">
+              <div className="mt-8 rounded-xl border border-[#eadff3] bg-[#f7f1fc] p-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#7136b5]">
                   <Icon name="grid" className="size-4" /> Local environment
                 </div>
-                <p className="mt-2 text-[11px] leading-5 text-[#718078]">This dashboard reads the live FastAPI readiness endpoint. It is not using mock health data.</p>
+                <p className="mt-2 text-[11px] leading-5 text-[#81738e]">This dashboard reads the live FastAPI readiness endpoint. It is not using mock health data.</p>
               </div>
             </article>
           </section>

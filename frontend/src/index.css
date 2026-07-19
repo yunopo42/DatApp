@@ -7,8 +7,8 @@
 
 :root {
   font-family: var(--font-sans);
-  color: #17211b;
-  background: #f3f6f4;
+  color: #251536;
+  background: #f8f5ff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -32,6 +32,125 @@ a {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgb(92 206 145 / 45%);
+  outline: 3px solid rgb(168 85 247 / 45%);
   outline-offset: 2px;
+}
+
+@keyframes ai-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes ai-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-18px, 14px, 0) rotate(8deg);
+  }
+}
+
+@keyframes ai-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.ai-shell {
+  position: relative;
+  isolation: isolate;
+  background-image:
+    radial-gradient(circle at 78% 10%, rgb(216 180 254 / 22%), transparent 30%),
+    radial-gradient(circle at 35% 80%, rgb(232 121 249 / 10%), transparent 28%),
+    linear-gradient(145deg, #fbf9ff 0%, #f4effa 48%, #faf7ff 100%);
+}
+
+.ai-logo,
+.ai-button {
+  background: linear-gradient(120deg, #7c3aed, #a855f7, #d946ef, #7c3aed);
+  background-size: 240% 240%;
+  animation: ai-gradient-shift 8s ease infinite;
+}
+
+.ai-hero {
+  isolation: isolate;
+  background: linear-gradient(
+    120deg,
+    #160724 0%,
+    #3b1469 25%,
+    #7c3aed 52%,
+    #c026d3 72%,
+    #2e1065 100%
+  );
+  background-size: 300% 300%;
+  animation: ai-gradient-shift 14s ease-in-out infinite;
+}
+
+.ai-hero::before {
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  content: '';
+  background:
+    radial-gradient(circle at 28% 38%, rgb(192 132 252 / 38%), transparent 24%),
+    radial-gradient(circle at 70% 62%, rgb(244 114 182 / 24%), transparent 22%);
+  animation: ai-float 12s ease-in-out infinite;
+}
+
+.ai-orbit {
+  animation: ai-float 11s ease-in-out infinite reverse;
+}
+
+.ai-glow {
+  animation: ai-pulse 7s ease-in-out infinite;
+}
+
+.ai-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.ai-card::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  background: linear-gradient(120deg, transparent 55%, rgb(192 132 252 / 8%));
+}
+
+.ai-card:hover {
+  transform: translateY(-2px);
+  border-color: #d8c1eb;
+  box-shadow: 0 18px 45px rgb(88 28 135 / 10%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-logo,
+  .ai-button,
+  .ai-hero,
+  .ai-hero::before,
+  .ai-orbit,
+  .ai-glow {
+    animation: none;
+  }
+
+  .ai-card {
+    transition: none;
+  }
 }
