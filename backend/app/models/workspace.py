@@ -9,7 +9,6 @@ from app.db.base import Base
 from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 from app.models.enums import WorkspaceRole, enum_values
 
-
 if TYPE_CHECKING:
     from app.models.project import Project
     from app.models.user import User

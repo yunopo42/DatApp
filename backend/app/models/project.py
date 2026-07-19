@@ -8,7 +8,6 @@ from app.db.base import Base
 from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 from app.models.enums import ProjectStatus, enum_values
 
-
 if TYPE_CHECKING:
     from app.models.user import User
     from app.models.workspace import Workspace

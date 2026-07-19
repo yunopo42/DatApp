@@ -1,75 +1,136 @@
 # DatApp
 
-DatApp is a web application for uploading tabular datasets, assessing data
-quality, calculating statistics, creating visualizations, and exporting analysis
-results. Development is intentionally incremental so that each architectural and
-engineering decision remains understandable.
+DatApp is a modular-monolith web application for uploading tabular datasets,
+assessing data quality, calculating statistics, creating visualizations, and
+exporting reproducible analysis results.
 
-The project begins as a modular monolith: the frontend and backend are separate
-applications in one repository, with one backend deployment and one PostgreSQL
-database. This keeps the system straightforward while leaving clear module
-boundaries for future growth.
+Development is intentionally incremental. AI, billing, subscriptions, and
+advanced analytics remain outside the current foundation.
 
-## Initial technology stack
+## Technology stack
 
-- Frontend: React, TypeScript, Vite, and Tailwind CSS
-- Backend: Python, FastAPI, Pydantic, SQLAlchemy 2, and Alembic
-- Database: PostgreSQL, run locally with Docker Compose
-- Data processing (later phase): Polars, DuckDB, and OpenPyXL
-- Quality tools: Ruff, Pytest, and ESLint
+- Frontend: React 19, TypeScript, Vite, and ESLint
+- Backend: Python 3.13, FastAPI, Pydantic, SQLAlchemy 2, and Alembic
+- Database: PostgreSQL 18 through Docker Compose
+- Quality: Ruff, Pytest, ESLint, TypeScript, and Vite production builds
+- Planned data processing: Polars, DuckDB, and OpenPyXL
+- Planned styling: Tailwind CSS
 
-No frontend or backend application has been scaffolded yet. The current step
-only establishes the repository foundation.
+## Current foundation
+
+- Typed environment configuration with secret masking
+- FastAPI liveness and PostgreSQL readiness endpoints
+- Async SQLAlchemy engine and session factory
+- Alembic migration infrastructure
+- User, workspace, membership, and project domain models
+- React and TypeScript development environment
+- Backend unit and PostgreSQL integration tests
+- Dockerized local PostgreSQL with persistent storage
+
+Authentication, project APIs, file upload, dataset analysis, and AI features are
+not implemented yet.
 
 ## Repository structure
 
 ```text
 DatApp/
-|-- frontend/          # React application boundary
-|-- backend/           # FastAPI application boundary
-|-- .env.example       # Documented, non-secret configuration template
-|-- .gitignore         # Files that must remain outside version control
-`-- README.md          # Project overview and development roadmap
+|-- backend/
+|   |-- app/             # FastAPI application and domain code
+|   |-- migrations/      # Alembic migration environment and revisions
+|   `-- tests/           # Unit and PostgreSQL integration tests
+|-- frontend/            # React, TypeScript, and Vite application
+|-- compose.yaml         # Local PostgreSQL service
+|-- .env.example         # Non-secret configuration template
+|-- .gitignore
+`-- README.md
 ```
 
-The `frontend` and `backend` directories contain short boundary notes for now.
-Each application will receive its own source layout, dependency configuration,
-tests, and documentation when it is scaffolded in a later step.
-
-## Local development prerequisites
-
-Install the following software before application setup:
+## Prerequisites
 
 - Git
-- Node.js (current LTS) and npm
-- Python 3.12 or another version selected during backend setup
+- Python 3.13
+- Node.js 24 and npm
 - Docker Desktop with Docker Compose
-- A code editor such as Visual Studio Code
 
-PostgreSQL does not need a separate host installation because it will run in
-Docker. Exact supported versions and setup commands will be pinned when the
-frontend and backend are scaffolded.
+PostgreSQL does not need a separate Windows installation.
 
-## Planned development phases
+## Local development
 
-1. Repository foundation and architecture documentation
-2. Backend scaffold, configuration, health endpoint, and tests
-3. Frontend scaffold, shared layout, and backend connectivity check
-4. PostgreSQL and Docker Compose development environment
-5. User authentication and authorization boundaries
-6. Analysis projects and ownership-aware database models
-7. Secure CSV/XLSX upload and storage workflow
+Run commands from the repository root unless a step says otherwise.
+
+Create the local configuration once, then replace its development-only password
+without committing the file:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Start PostgreSQL:
+
+```powershell
+docker compose up -d database
+```
+
+Prepare and start the backend:
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements-dev.txt
+python -m alembic upgrade head
+python -m uvicorn app.main:app --reload
+```
+
+In another PowerShell window, prepare and start the frontend:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Local endpoints:
+
+- Frontend: `http://127.0.0.1:5173`
+- Backend API documentation: `http://127.0.0.1:8000/docs`
+- Liveness: `http://127.0.0.1:8000/health/live`
+- Readiness: `http://127.0.0.1:8000/health/ready`
+
+## Quality checks
+
+From `backend/`:
+
+```powershell
+python -m ruff check .
+python -m ruff format --check .
+python -m pytest
+python -m alembic check
+```
+
+From `frontend/`:
+
+```powershell
+npm run lint
+npm run build
+```
+
+## Development phases
+
+1. Repository and local development foundation — completed
+2. Typed backend configuration and health checks — completed
+3. PostgreSQL, SQLAlchemy, and Alembic foundation — completed
+4. Identity, workspace, and project data foundation — completed
+5. Authentication and authorization boundaries
+6. Project application services and API
+7. Secure CSV/XLSX upload and storage
 8. Dataset validation, preview, and column detection
 9. Data-quality profiling and basic statistics
 10. Visualization recommendations and result export
-11. AI-assisted insights and usage limits, only after the core product is stable
+11. AI-assisted insights, only after deterministic analysis is stable
 
-Each phase will be split into small, testable steps. Billing, subscriptions,
-machine learning, and advanced AI features are outside the initial scope.
+## Configuration safety
 
-## Configuration
-
-Copy `.env.example` to `.env` when local services are introduced, then replace
-the development-only example values as needed. Never commit `.env` or real
-credentials.
-
+`.env.example` documents required variables and is committed. `.env` contains
+local values and is ignored by Git. Never commit real credentials or expose the
+database URL through API responses and logs.
