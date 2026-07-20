@@ -1,15 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { fetchWorkspaces, type Workspace } from '../lib/api'
 import { WorkspaceForm } from './WorkspaceForm'
 
-export function WorkspacePanel({ accessToken }: { accessToken: string }) {
+export function WorkspacePanel({
+  accessToken,
+  onWorkspaceSelected,
+}: {
+  accessToken: string
+  onWorkspaceSelected: (workspace: Workspace | null) => void
+}) {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
   const [formOpen, setFormOpen] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string | null>(
+    null,
+  )
+  const selectedWorkspaceIdRef = useRef<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -18,6 +28,15 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
       .then((loadedWorkspaces) => {
         setWorkspaces(loadedWorkspaces)
         setError(null)
+        const selectedWorkspace =
+          loadedWorkspaces.find(
+            (workspace) => workspace.id === selectedWorkspaceIdRef.current,
+          ) ??
+          loadedWorkspaces[0] ??
+          null
+        selectedWorkspaceIdRef.current = selectedWorkspace?.id ?? null
+        setSelectedWorkspaceId(selectedWorkspace?.id ?? null)
+        onWorkspaceSelected(selectedWorkspace)
       })
       .catch((loadError: unknown) => {
         if (!controller.signal.aborted) {
@@ -35,7 +54,14 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
       })
 
     return () => controller.abort()
-  }, [accessToken, reloadKey])
+  }, [accessToken, onWorkspaceSelected, reloadKey])
+
+  useEffect(
+    () => () => {
+      onWorkspaceSelected(null)
+    },
+    [onWorkspaceSelected],
+  )
 
   function retry() {
     setLoading(true)
@@ -50,7 +76,20 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
     ])
     setFormOpen(false)
     setSuccessMessage(`${workspace.name} was created successfully.`)
+    selectedWorkspaceIdRef.current = workspace.id
+    setSelectedWorkspaceId(workspace.id)
+    onWorkspaceSelected(workspace)
   }
+
+  function selectWorkspace(workspace: Workspace) {
+    selectedWorkspaceIdRef.current = workspace.id
+    setSelectedWorkspaceId(workspace.id)
+    setSuccessMessage(null)
+    onWorkspaceSelected(workspace)
+  }
+
+  const selectedWorkspace =
+    workspaces.find((workspace) => workspace.id === selectedWorkspaceId) ?? null
 
   return (
     <section
@@ -112,6 +151,20 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
         </p>
       )}
 
+      {selectedWorkspace !== null && (
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#cdb5e4] bg-[linear-gradient(120deg,#f8f1ff,#fdf9ff)] px-4 py-3">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#8b5bb5]">
+              Active workspace
+            </p>
+            <p className="mt-1 text-sm font-semibold">{selectedWorkspace.name}</p>
+          </div>
+          <span className="rounded-full bg-white px-3 py-1 text-xs text-[#765d8a] shadow-sm">
+            /{selectedWorkspace.slug}
+          </span>
+        </div>
+      )}
+
       <div className="mt-6" aria-live="polite">
         {loading ? (
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -159,10 +212,19 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
           </div>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {workspaces.map((workspace) => (
-              <article
+            {workspaces.map((workspace) => {
+              const selected = workspace.id === selectedWorkspaceId
+              return (
+              <button
                 key={workspace.id}
-                className="rounded-2xl border border-[#e5d9ef] bg-[#fcfaff] p-4"
+                type="button"
+                onClick={() => selectWorkspace(workspace)}
+                aria-pressed={selected}
+                className={`rounded-2xl border p-4 text-left transition ${
+                  selected
+                    ? 'border-[#a855f7] bg-[#f7edff] shadow-[0_10px_28px_rgba(126,34,206,0.12)]'
+                    : 'border-[#e5d9ef] bg-[#fcfaff] hover:border-[#cdb5e4] hover:bg-[#faf6ff]'
+                }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -173,12 +235,19 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
                       /{workspace.slug}
                     </p>
                   </div>
-                  <span className="rounded-full bg-[#eee3f8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#72409d]">
-                    {workspace.plan}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="rounded-full bg-[#eee3f8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#72409d]">
+                      {workspace.plan}
+                    </span>
+                    {selected && (
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-[#7c3aed]">
+                        Active
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </article>
-            ))}
+              </button>
+            )})}
           </div>
         )}
       </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { AuthDialog, type AuthMode } from './auth/AuthDialog'
 import { useAuth } from './auth/useAuth'
+import type { Workspace } from './lib/api'
 import { WorkspacePanel } from './workspaces/WorkspacePanel'
 
 type ServiceStatus = 'checking' | 'ready' | 'unavailable'
@@ -107,6 +108,9 @@ function App() {
   const [lastChecked, setLastChecked] = useState<string>('Checking now')
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
   const [authDialogMode, setAuthDialogMode] = useState<AuthMode>('sign-in')
+  const [selectedWorkspace, setSelectedWorkspace] = useState<Workspace | null>(
+    null,
+  )
 
   function openAuthDialog(mode: AuthMode) {
     setAuthDialogMode(mode)
@@ -154,8 +158,13 @@ function App() {
     },
     {
       title: 'Create your first workspace',
-      detail: 'The workspace form will activate after authentication.',
-      done: false,
+      detail:
+        selectedWorkspace === null
+          ? profile === null
+            ? 'The workspace form activates after backend profile verification.'
+            : 'Create or select a workspace to establish your active context.'
+          : `${selectedWorkspace.name} is your active workspace.`,
+      done: selectedWorkspace !== null,
     },
     {
       title: 'Upload a dataset',
@@ -301,7 +310,15 @@ function App() {
 
           <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {[
-              { label: 'Projects', value: '0', helper: 'Workspace API next', icon: 'folder' as const },
+              {
+                label: 'Projects',
+                value: '0',
+                helper:
+                  selectedWorkspace === null
+                    ? 'Select a workspace first'
+                    : `Active: ${selectedWorkspace.name}`,
+                icon: 'folder' as const,
+              },
               { label: 'Datasets', value: '0', helper: 'Upload phase pending', icon: 'database' as const },
               { label: 'Analyses', value: '0', helper: 'No runs yet', icon: 'activity' as const },
               { label: 'Data quality', value: '—', helper: 'Waiting for data', icon: 'chart' as const },
@@ -322,7 +339,10 @@ function App() {
           </section>
 
           {session !== null && profile !== null && (
-            <WorkspacePanel accessToken={session.access_token} />
+            <WorkspacePanel
+              accessToken={session.access_token}
+              onWorkspaceSelected={setSelectedWorkspace}
+            />
           )}
 
           <section id="getting-started" className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">

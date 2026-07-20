@@ -96,9 +96,9 @@ complete.
 - [x] **W-03:** Add a focused create-workspace form with name and URL-safe slug
   fields.
 - [x] **W-04:** Display safe backend validation and slug-conflict errors.
-- [ ] **W-05:** Show created workspaces in the dashboard and allow one to be
+- [x] **W-05:** Show created workspaces in the dashboard and allow one to be
   selected.
-- [ ] **W-06:** Replace the placeholder workspace onboarding step with live
+- [x] **W-06:** Replace the placeholder workspace onboarding step with live
   completion state.
 - [ ] **W-07:** Verify create, refresh, sign-out, and sign-in persistence in the
   browser.
