@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import { fetchWorkspaces, type Workspace } from '../lib/api'
+import { WorkspaceForm } from './WorkspaceForm'
 
 export function WorkspacePanel({ accessToken }: { accessToken: string }) {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
+  const [formOpen, setFormOpen] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -40,6 +43,15 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
     setReloadKey((currentKey) => currentKey + 1)
   }
 
+  function handleCreated(workspace: Workspace) {
+    setWorkspaces((currentWorkspaces) => [
+      workspace,
+      ...currentWorkspaces.filter((current) => current.id !== workspace.id),
+    ])
+    setFormOpen(false)
+    setSuccessMessage(`${workspace.name} was created successfully.`)
+  }
+
   return (
     <section
       aria-labelledby="workspaces-title"
@@ -60,12 +72,45 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
             Secure spaces available through your current membership.
           </p>
         </div>
-        {!loading && error === null && (
-          <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">
-            {workspaces.length} {workspaces.length === 1 ? 'workspace' : 'workspaces'}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {!loading && error === null && (
+            <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">
+              {workspaces.length}{' '}
+              {workspaces.length === 1 ? 'workspace' : 'workspaces'}
+            </span>
+          )}
+          {!loading && error === null && (
+            <button
+              type="button"
+              onClick={() => {
+                setFormOpen((current) => !current)
+                setSuccessMessage(null)
+              }}
+              aria-expanded={formOpen}
+              className="ai-button rounded-xl px-3.5 py-2 text-xs font-semibold text-white shadow-[0_8px_20px_rgba(126,34,206,0.18)]"
+            >
+              {formOpen ? 'Close form' : 'New workspace'}
+            </button>
+          )}
+        </div>
       </div>
+
+      {formOpen && (
+        <WorkspaceForm
+          accessToken={accessToken}
+          onCancel={() => setFormOpen(false)}
+          onCreated={handleCreated}
+        />
+      )}
+
+      {successMessage !== null && (
+        <p
+          role="status"
+          className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-700"
+        >
+          {successMessage}
+        </p>
+      )}
 
       <div className="mt-6" aria-live="polite">
         {loading ? (
@@ -109,7 +154,7 @@ export function WorkspacePanel({ accessToken }: { accessToken: string }) {
             </div>
             <p className="mt-4 text-sm font-semibold">No workspaces yet</p>
             <p className="mx-auto mt-1 max-w-md text-xs leading-5 text-[#867990]">
-              Your account is ready. Workspace creation is the next active task.
+              Your account is ready. Use New workspace to create the first one.
             </p>
           </div>
         ) : (

@@ -82,7 +82,7 @@ export async function fetchCurrentUser(
     accessToken,
     'Unable to load your DatApp profile.',
     {
-    signal,
+      signal,
     },
   )
 }

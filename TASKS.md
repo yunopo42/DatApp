@@ -93,9 +93,9 @@ complete.
   requests using the current Supabase access token.
 - [x] **W-02:** Load the signed-in user's workspaces and represent loading,
   empty, error, and ready states.
-- [ ] **W-03:** Add a focused create-workspace form with name and URL-safe slug
+- [x] **W-03:** Add a focused create-workspace form with name and URL-safe slug
   fields.
-- [ ] **W-04:** Display safe backend validation and slug-conflict errors.
+- [x] **W-04:** Display safe backend validation and slug-conflict errors.
 - [ ] **W-05:** Show created workspaces in the dashboard and allow one to be
   selected.
 - [ ] **W-06:** Replace the placeholder workspace onboarding step with live
