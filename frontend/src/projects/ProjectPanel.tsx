@@ -18,6 +18,7 @@ export function ProjectPanel({
   const [reloadKey, setReloadKey] = useState(0)
   const [formOpen, setFormOpen] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const canCreateProjects = workspace.role !== 'viewer'
 
   useEffect(() => {
     const controller = new AbortController()
@@ -91,7 +92,7 @@ export function ProjectPanel({
               {projects.length} {projects.length === 1 ? 'project' : 'projects'}
             </span>
           )}
-          {!loading && error === null && (
+          {!loading && error === null && canCreateProjects && (
             <button
               type="button"
               onClick={() => {
@@ -106,6 +107,12 @@ export function ProjectPanel({
           )}
         </div>
       </div>
+
+      {!loading && error === null && !canCreateProjects && (
+        <p className="mt-5 rounded-xl border border-[#e4d9ef] bg-[#f8f4fb] px-4 py-3 text-xs text-[#765d8a]">
+          Viewer access can review projects but cannot create new ones.
+        </p>
+      )}
 
       {formOpen && (
         <ProjectForm

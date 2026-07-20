@@ -3,6 +3,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.models.enums import WorkspaceRole
+
 
 class WorkspaceCreateRequest(BaseModel):
     name: str = Field(min_length=1, max_length=120)
@@ -28,6 +30,7 @@ class WorkspaceResponse(BaseModel):
     name: str
     slug: str
     plan: str
+    role: WorkspaceRole
     owner_user_id: UUID
     created_at: datetime
     updated_at: datetime

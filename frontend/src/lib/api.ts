@@ -31,6 +31,7 @@ export type Workspace = {
   name: string
   slug: string
   plan: string
+  role: 'owner' | 'admin' | 'editor' | 'viewer'
   owner_user_id: string
   created_at: string
   updated_at: string

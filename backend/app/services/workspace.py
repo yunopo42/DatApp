@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,6 +7,12 @@ from app.core.exceptions import ConflictError, ResourceNotFoundError
 from app.models import Workspace, WorkspaceMember
 from app.models.enums import WorkspaceRole
 from app.repositories.workspace import WorkspaceRepository
+
+
+@dataclass(frozen=True, slots=True)
+class WorkspaceAccess:
+    workspace: Workspace
+    role: WorkspaceRole
 
 
 class WorkspaceService:
@@ -41,6 +48,16 @@ class WorkspaceService:
 
     async def list_workspaces_for_user(self, user_id: UUID) -> list[Workspace]:
         return await self._workspaces.list_for_member(user_id)
+
+    async def list_workspace_access_for_user(
+        self,
+        user_id: UUID,
+    ) -> list[WorkspaceAccess]:
+        access_rows = await self._workspaces.list_access_for_member(user_id)
+        return [
+            WorkspaceAccess(workspace=workspace, role=role)
+            for workspace, role in access_rows
+        ]
 
     async def get_workspace_for_user(
         self,

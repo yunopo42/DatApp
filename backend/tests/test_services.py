@@ -116,7 +116,13 @@ async def run_service_scenario(suffix: str) -> None:
             owner_workspaces = await workspace_service.list_workspaces_for_user(
                 owner.id
             )
+            owner_access = await workspace_service.list_workspace_access_for_user(
+                owner.id
+            )
             viewer_workspaces = await workspace_service.list_workspaces_for_user(
+                viewer.id
+            )
+            viewer_access = await workspace_service.list_workspace_access_for_user(
                 viewer.id
             )
             outsider_workspaces = await workspace_service.list_workspaces_for_user(
@@ -133,7 +139,11 @@ async def run_service_scenario(suffix: str) -> None:
 
             assert owner_workspace.id == workspace.id
             assert [item.id for item in owner_workspaces] == [workspace.id]
+            assert owner_access[0].workspace.id == workspace.id
+            assert owner_access[0].role == WorkspaceRole.OWNER
             assert [item.id for item in viewer_workspaces] == [workspace.id]
+            assert viewer_access[0].workspace.id == workspace.id
+            assert viewer_access[0].role == WorkspaceRole.VIEWER
             assert outsider_workspaces == []
             assert viewer_project.id == project.id
             assert [item.id for item in viewer_projects] == [project.id]

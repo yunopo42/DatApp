@@ -28,6 +28,8 @@ Last verified: 2026-07-20
   healthy without console errors.
 - Workspace creation, refresh, sign-out, and sign-in persistence have been
   verified in the browser against live PostgreSQL data.
+- Workspace membership roles now drive project creation permissions in the
+  live frontend while the backend remains authoritative.
 
 ## Completed milestones
 
@@ -83,7 +85,7 @@ Last verified: 2026-07-20
 - [x] Synchronize the frontend session with `GET /api/v1/auth/me`.
 - [x] Display a safe backend profile verification state in onboarding.
 
-## Recently completed milestone
+## Completed milestone history
 
 ### M5 — Authenticated workspace experience
 
@@ -113,17 +115,25 @@ Acceptance criteria:
 - Refreshing the page preserves the workspace through PostgreSQL persistence.
 - Frontend lint/build and all backend checks still pass.
 
-## Current milestone
+## Recently completed milestone
 
 ### M6 — Project experience
 
 - [x] Add a typed frontend project API client.
 - [x] List projects for the selected workspace.
 - [x] Add a create-project form with name and optional description.
-- [ ] Respect owner, admin, editor, and viewer permissions in the UI.
+- [x] Respect owner, admin, editor, and viewer permissions in the UI.
 - [x] Replace dashboard project placeholders with live data.
 
-## Planned milestones
+Acceptance criteria:
+
+- Projects are always loaded from the active workspace's protected API.
+- Owner, admin, and editor roles can create projects; viewer cannot.
+- A created project persists in PostgreSQL and updates the live dashboard.
+- Frontend lint/build and all backend checks pass without browser console
+  errors.
+
+## Current milestone
 
 ### M7 — Secure dataset upload and storage
 
@@ -134,6 +144,8 @@ Acceptance criteria:
 - [ ] Store files outside the public web root with generated identifiers.
 - [ ] Reject unsafe, unsupported, oversized, or malformed uploads.
 - [ ] Add cleanup behavior for failed database or storage operations.
+
+## Planned milestones
 
 ### M8 — Dataset validation and preview
 

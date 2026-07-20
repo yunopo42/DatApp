@@ -160,7 +160,7 @@ export function WorkspacePanel({
             <p className="mt-1 text-sm font-semibold">{selectedWorkspace.name}</p>
           </div>
           <span className="rounded-full bg-white px-3 py-1 text-xs text-[#765d8a] shadow-sm">
-            /{selectedWorkspace.slug}
+            /{selectedWorkspace.slug} · {selectedWorkspace.role}
           </span>
         </div>
       )}
@@ -238,6 +238,9 @@ export function WorkspacePanel({
                   <div className="flex flex-col items-end gap-2">
                     <span className="rounded-full bg-[#eee3f8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#72409d]">
                       {workspace.plan}
+                    </span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-[#80659d]">
+                      {workspace.role}
                     </span>
                     {selected && (
                       <span className="text-[10px] font-semibold uppercase tracking-wide text-[#7c3aed]">

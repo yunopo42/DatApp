@@ -9,6 +9,8 @@ from app.core.exceptions import ConflictError
 from app.db.session import get_db_session
 from app.main import app
 from app.models import User, Workspace
+from app.models.enums import WorkspaceRole
+from app.services.workspace import WorkspaceAccess
 
 
 class FakeWorkspaceService:
@@ -16,12 +18,17 @@ class FakeWorkspaceService:
         self.workspace = workspace
         self.created_with: dict[str, object] | None = None
 
-    async def list_workspaces_for_user(
+    async def list_workspace_access_for_user(
         self,
         user_id: UUID,
-    ) -> list[Workspace]:
+    ) -> list[WorkspaceAccess]:
         assert user_id == self.workspace.owner_user_id
-        return [self.workspace]
+        return [
+            WorkspaceAccess(
+                workspace=self.workspace,
+                role=WorkspaceRole.VIEWER,
+            )
+        ]
 
     async def create_workspace(self, **values) -> Workspace:
         self.created_with = values
@@ -78,8 +85,10 @@ def test_workspace_endpoints_list_and_create_for_current_user(monkeypatch) -> No
 
     assert list_response.status_code == 200
     assert list_response.json()[0]["id"] == str(workspace.id)
+    assert list_response.json()[0]["role"] == "viewer"
     assert create_response.status_code == 201
     assert create_response.json()["slug"] == "research-lab"
+    assert create_response.json()["role"] == "owner"
     assert service.created_with == {
         "owner_user_id": workspace.owner_user_id,
         "name": "Research Lab",

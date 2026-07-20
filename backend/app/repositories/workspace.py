@@ -4,6 +4,7 @@ from sqlalchemy import exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Workspace, WorkspaceMember
+from app.models.enums import WorkspaceRole
 
 
 class WorkspaceRepository:
@@ -46,6 +47,22 @@ class WorkspaceRepository:
             .order_by(Workspace.created_at.desc(), Workspace.id)
         )
         return list(await self._session.scalars(statement))
+
+    async def list_access_for_member(
+        self,
+        user_id: UUID,
+    ) -> list[tuple[Workspace, WorkspaceRole]]:
+        statement = (
+            select(Workspace, WorkspaceMember.role)
+            .join(
+                WorkspaceMember,
+                WorkspaceMember.workspace_id == Workspace.id,
+            )
+            .where(WorkspaceMember.user_id == user_id)
+            .order_by(Workspace.created_at.desc(), Workspace.id)
+        )
+        rows = (await self._session.execute(statement)).all()
+        return [(workspace, role) for workspace, role in rows]
 
     async def get_membership(
         self,
