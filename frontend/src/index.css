@@ -102,6 +102,7 @@ a:focus-visible {
   position: absolute;
   inset: -45%;
   z-index: -1;
+  pointer-events: none;
   content: '';
   background:
     radial-gradient(circle at 28% 38%, rgb(192 132 252 / 38%), transparent 24%),

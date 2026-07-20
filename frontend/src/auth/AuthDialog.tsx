@@ -89,10 +89,12 @@ export function AuthDialog({
               <input
                 value={displayName}
                 onChange={(event) => setDisplayName(event.target.value)}
+                onPointerDown={(event) => event.currentTarget.focus()}
                 required
                 maxLength={120}
+                autoFocus
                 autoComplete="name"
-                className="mt-2 w-full rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] outline-none transition focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
+                className="relative z-10 mt-2 w-full cursor-text rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] caret-[#7c3aed] outline-none transition pointer-events-auto focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
               />
             </label>
           )}
@@ -102,9 +104,11 @@ export function AuthDialog({
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              onPointerDown={(event) => event.currentTarget.focus()}
               required
+              autoFocus={mode === 'sign-in'}
               autoComplete="email"
-              className="mt-2 w-full rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] outline-none transition focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
+              className="relative z-10 mt-2 w-full cursor-text rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] caret-[#7c3aed] outline-none transition pointer-events-auto focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
             />
           </label>
           <label className="block text-sm font-medium text-[#4a365c]">
@@ -113,10 +117,11 @@ export function AuthDialog({
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              onPointerDown={(event) => event.currentTarget.focus()}
               required
               minLength={8}
               autoComplete={mode === 'sign-in' ? 'current-password' : 'new-password'}
-              className="mt-2 w-full rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] outline-none transition focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
+              className="relative z-10 mt-2 w-full cursor-text rounded-xl border border-[#dfd2ea] bg-[#fcfaff] px-4 py-3 text-[#251536] caret-[#7c3aed] outline-none transition pointer-events-auto focus:border-[#a855f7] focus:ring-4 focus:ring-[#a855f7]/10"
             />
           </label>
 
