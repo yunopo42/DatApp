@@ -26,6 +26,7 @@ advanced analytics remain outside the current foundation.
 - Safe first-login user provisioning and identity-conflict protection
 - Workspace-scoped repositories and role-aware project services
 - Protected workspace creation and membership-scoped listing API
+- Protected project creation and workspace-scoped listing API
 - Responsive React dashboard with live backend readiness status
 - Backend unit and PostgreSQL integration tests
 - Dockerized local PostgreSQL with persistent storage
@@ -102,6 +103,7 @@ Local endpoints:
 - Readiness: `http://127.0.0.1:8000/health/ready`
 - Current authenticated user: `GET http://127.0.0.1:8000/api/v1/auth/me`
 - Workspaces: `GET/POST http://127.0.0.1:8000/api/v1/workspaces`
+- Projects: `GET/POST http://127.0.0.1:8000/api/v1/workspaces/{workspace_id}/projects`
 
 ## Quality checks
 
@@ -129,7 +131,7 @@ npm run build
 4. Identity, workspace, and project data foundation — completed
 5. Authentication and authorization boundaries — backend boundary completed,
    provider integration and protected APIs pending
-6. Project application services — service layer completed, API pending
+6. Project application services — create/list API completed
 7. Secure CSV/XLSX upload and storage
 8. Dataset validation, preview, and column detection
 9. Data-quality profiling and basic statistics
