@@ -24,3 +24,7 @@ class AuthConfigurationError(DomainError):
 
 class AuthProviderUnavailableError(DomainError):
     """Raised when signing keys cannot be obtained from the auth provider."""
+
+
+class UploadValidationError(DomainError):
+    """Raised when an uploaded file violates DatApp's file policy."""

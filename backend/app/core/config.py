@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     auth_audience: str | None = None
     auth_jwks_url: str | None = None
     auth_algorithm: Literal["RS256", "ES256"] = "RS256"
+    upload_max_bytes: int = Field(
+        default=25 * 1024 * 1024,
+        ge=1,
+        le=1024 * 1024 * 1024,
+    )
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",

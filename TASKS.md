@@ -139,7 +139,7 @@ Acceptance criteria:
 
 - [x] Define dataset and stored-file database models.
 - [x] Create and verify the required Alembic migration.
-- [ ] Define file-size, extension, MIME, and filename policies.
+- [x] Define file-size, extension, MIME, and filename policies.
 - [ ] Implement workspace/project-scoped CSV and XLSX upload.
 - [ ] Store files outside the public web root with generated identifiers.
 - [ ] Reject unsafe, unsupported, oversized, or malformed uploads.
