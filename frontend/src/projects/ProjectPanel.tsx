@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { fetchProjects, type Project, type Workspace } from '../lib/api'
+import { ProjectForm } from './ProjectForm'
 
 export function ProjectPanel({
   accessToken,
@@ -15,6 +16,8 @@ export function ProjectPanel({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
+  const [formOpen, setFormOpen] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -51,6 +54,17 @@ export function ProjectPanel({
     setReloadKey((currentKey) => currentKey + 1)
   }
 
+  function handleCreated(project: Project) {
+    const nextProjects = [
+      project,
+      ...projects.filter((currentProject) => currentProject.id !== project.id),
+    ]
+    setProjects(nextProjects)
+    setFormOpen(false)
+    setSuccessMessage(`${project.name} was created successfully.`)
+    onProjectCountChange(nextProjects.length)
+  }
+
   return (
     <section
       aria-labelledby="projects-title"
@@ -71,12 +85,45 @@ export function ProjectPanel({
             Analysis projects available in your active workspace.
           </p>
         </div>
-        {!loading && error === null && (
-          <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">
-            {projects.length} {projects.length === 1 ? 'project' : 'projects'}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {!loading && error === null && (
+            <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">
+              {projects.length} {projects.length === 1 ? 'project' : 'projects'}
+            </span>
+          )}
+          {!loading && error === null && (
+            <button
+              type="button"
+              onClick={() => {
+                setFormOpen((current) => !current)
+                setSuccessMessage(null)
+              }}
+              aria-expanded={formOpen}
+              className="ai-button rounded-xl px-3.5 py-2 text-xs font-semibold text-white shadow-[0_8px_20px_rgba(126,34,206,0.18)]"
+            >
+              {formOpen ? 'Close form' : 'New project'}
+            </button>
+          )}
+        </div>
       </div>
+
+      {formOpen && (
+        <ProjectForm
+          accessToken={accessToken}
+          workspaceId={workspace.id}
+          onCancel={() => setFormOpen(false)}
+          onCreated={handleCreated}
+        />
+      )}
+
+      {successMessage !== null && (
+        <p
+          role="status"
+          className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-700"
+        >
+          {successMessage}
+        </p>
+      )}
 
       <div className="mt-6" aria-live="polite">
         {loading ? (

@@ -119,7 +119,7 @@ Acceptance criteria:
 
 - [x] Add a typed frontend project API client.
 - [x] List projects for the selected workspace.
-- [ ] Add a create-project form with name and optional description.
+- [x] Add a create-project form with name and optional description.
 - [ ] Respect owner, admin, editor, and viewer permissions in the UI.
 - [x] Replace dashboard project placeholders with live data.
 
