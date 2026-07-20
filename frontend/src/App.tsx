@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { AuthDialog } from './auth/AuthDialog'
+import { AuthDialog, type AuthMode } from './auth/AuthDialog'
 import { useAuth } from './auth/useAuth'
 
 type ServiceStatus = 'checking' | 'ready' | 'unavailable'
@@ -96,6 +96,12 @@ function App() {
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus>('checking')
   const [lastChecked, setLastChecked] = useState<string>('Checking now')
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
+  const [authDialogMode, setAuthDialogMode] = useState<AuthMode>('sign-in')
+
+  function openAuthDialog(mode: AuthMode) {
+    setAuthDialogMode(mode)
+    setAuthDialogOpen(true)
+  }
 
   useEffect(() => {
     let active = true
@@ -212,18 +218,28 @@ function App() {
               {isReady ? 'Systems online' : serviceStatus === 'checking' ? 'Checking systems' : 'Service unavailable'}
             </div>
             {user === null ? (
-              <button
-                type="button"
-                disabled={!configured || loading}
-                onClick={() => setAuthDialogOpen(true)}
-                className="ai-button rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(126,34,206,0.2)] disabled:cursor-not-allowed disabled:opacity-55"
-              >
-                {loading
-                  ? 'Loading…'
-                  : configured
-                    ? 'Sign in'
-                    : 'Auth setup pending'}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={!configured || loading}
+                  onClick={() => openAuthDialog('sign-up')}
+                  className="rounded-xl border border-[#ddcfeb] bg-white px-3 py-2 text-xs font-semibold text-[#6b2ca0] transition hover:border-[#b989e2] hover:bg-[#faf6ff] disabled:cursor-not-allowed disabled:opacity-55"
+                >
+                  Create account
+                </button>
+                <button
+                  type="button"
+                  disabled={!configured || loading}
+                  onClick={() => openAuthDialog('sign-in')}
+                  className="ai-button rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(126,34,206,0.2)] disabled:cursor-not-allowed disabled:opacity-55"
+                >
+                  {loading
+                    ? 'Loading…'
+                    : configured
+                      ? 'Sign in'
+                      : 'Auth setup pending'}
+                </button>
+              </div>
             ) : (
               <div className="flex items-center gap-2">
                 <span className="hidden max-w-48 truncate text-xs font-medium text-[#665575] md:block">
@@ -362,6 +378,8 @@ function App() {
       </main>
       <AuthDialog
         open={authDialogOpen}
+        mode={authDialogMode}
+        onModeChange={setAuthDialogMode}
         onClose={() => setAuthDialogOpen(false)}
       />
     </div>

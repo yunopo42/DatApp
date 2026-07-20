@@ -2,17 +2,20 @@ import { useState, type FormEvent } from 'react'
 
 import { useAuth } from './useAuth'
 
-type AuthMode = 'sign-in' | 'sign-up'
+export type AuthMode = 'sign-in' | 'sign-up'
 
 export function AuthDialog({
   open,
+  mode,
+  onModeChange,
   onClose,
 }: {
   open: boolean
+  mode: AuthMode
+  onModeChange: (mode: AuthMode) => void
   onClose: () => void
 }) {
   const { signIn, signUp } = useAuth()
-  const [mode, setMode] = useState<AuthMode>('sign-in')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
@@ -46,7 +49,7 @@ export function AuthDialog({
   }
 
   function switchMode(nextMode: AuthMode) {
-    setMode(nextMode)
+    onModeChange(nextMode)
     setMessage(null)
   }
 
