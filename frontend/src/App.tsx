@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { AuthDialog, type AuthMode } from './auth/AuthDialog'
 import { useAuth } from './auth/useAuth'
 import type { Workspace } from './lib/api'
+import { ProjectPanel } from './projects/ProjectPanel'
 import { WorkspacePanel } from './workspaces/WorkspacePanel'
 
 type ServiceStatus = 'checking' | 'ready' | 'unavailable'
@@ -111,6 +112,7 @@ function App() {
   const [selectedWorkspace, setSelectedWorkspace] = useState<Workspace | null>(
     null,
   )
+  const [projectCount, setProjectCount] = useState<number | null>(null)
 
   function openAuthDialog(mode: AuthMode) {
     setAuthDialogMode(mode)
@@ -312,7 +314,10 @@ function App() {
             {[
               {
                 label: 'Projects',
-                value: '0',
+                value:
+                  selectedWorkspace === null
+                    ? '0'
+                    : projectCount?.toString() ?? '—',
                 helper:
                   selectedWorkspace === null
                     ? 'Select a workspace first'
@@ -342,6 +347,15 @@ function App() {
             <WorkspacePanel
               accessToken={session.access_token}
               onWorkspaceSelected={setSelectedWorkspace}
+            />
+          )}
+
+          {session !== null && selectedWorkspace !== null && (
+            <ProjectPanel
+              key={selectedWorkspace.id}
+              accessToken={session.access_token}
+              workspace={selectedWorkspace}
+              onProjectCountChange={setProjectCount}
             />
           )}
 

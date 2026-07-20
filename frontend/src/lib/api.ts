@@ -41,6 +41,22 @@ export type WorkspaceCreateInput = {
   slug: string
 }
 
+export type Project = {
+  id: string
+  workspace_id: string
+  name: string
+  description: string | null
+  status: 'active' | 'archived'
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export type ProjectCreateInput = {
+  name: string
+  description?: string
+}
+
 function errorMessage(body: ApiErrorBody, fallback: string): string {
   if (typeof body.detail === 'string') {
     return body.detail
@@ -108,6 +124,37 @@ export function createWorkspace(
     '/api/v1/workspaces',
     accessToken,
     'Unable to create the workspace.',
+    {
+      method: 'POST',
+      body: JSON.stringify(input),
+      signal,
+    },
+  )
+}
+
+export function fetchProjects(
+  accessToken: string,
+  workspaceId: string,
+  signal?: AbortSignal,
+): Promise<Project[]> {
+  return requestJson<Project[]>(
+    `/api/v1/workspaces/${workspaceId}/projects`,
+    accessToken,
+    'Unable to load this workspace\'s projects.',
+    { signal },
+  )
+}
+
+export function createProject(
+  accessToken: string,
+  workspaceId: string,
+  input: ProjectCreateInput,
+  signal?: AbortSignal,
+): Promise<Project> {
+  return requestJson<Project>(
+    `/api/v1/workspaces/${workspaceId}/projects`,
+    accessToken,
+    'Unable to create the project.',
     {
       method: 'POST',
       body: JSON.stringify(input),

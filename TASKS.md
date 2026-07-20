@@ -117,11 +117,11 @@ Acceptance criteria:
 
 ### M6 — Project experience
 
-- [ ] Add a typed frontend project API client.
-- [ ] List projects for the selected workspace.
+- [x] Add a typed frontend project API client.
+- [x] List projects for the selected workspace.
 - [ ] Add a create-project form with name and optional description.
 - [ ] Respect owner, admin, editor, and viewer permissions in the UI.
-- [ ] Replace dashboard project placeholders with live data.
+- [x] Replace dashboard project placeholders with live data.
 
 ## Planned milestones
 
