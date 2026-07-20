@@ -24,10 +24,11 @@ managed-provider access token with an explicit algorithm, issuer, audience,
 required claims, and a cached JWKS signing key. A valid first login creates the
 local user; an email already linked to another provider subject is rejected.
 
-Set `AUTH_ISSUER`, `AUTH_AUDIENCE`, `AUTH_JWKS_URL`, and `AUTH_ALGORITHM` in the
-repository-root `.env` file after selecting an identity provider. Until then,
-health endpoints remain available and any protected dependency returns a safe
-`503` response. Real provider credentials and tokens must never be committed.
+DatApp uses Supabase Auth with asymmetric JWT signing keys. Set `AUTH_ISSUER`,
+`AUTH_AUDIENCE`, `AUTH_JWKS_URL`, and `AUTH_ALGORITHM` in the repository-root
+`.env` file. Until then, health endpoints remain available and any protected
+dependency returns a safe `503` response. Service-role keys, secret API keys,
+and real user tokens must never be committed or exposed to the frontend.
 
 `GET /api/v1/auth/me` is the first protected endpoint. It returns the current
 local user's safe public profile and deliberately excludes the provider subject.

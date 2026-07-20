@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { AuthDialog } from './auth/AuthDialog'
+import { useAuth } from './auth/useAuth'
+
 type ServiceStatus = 'checking' | 'ready' | 'unavailable'
 type IconName =
   | 'activity'
@@ -89,8 +92,10 @@ const navigation = [
 ]
 
 function App() {
+  const { configured, loading, user, signOut } = useAuth()
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus>('checking')
   const [lastChecked, setLastChecked] = useState<string>('Checking now')
+  const [authDialogOpen, setAuthDialogOpen] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -106,6 +111,38 @@ function App() {
   }, [])
 
   const isReady = serviceStatus === 'ready'
+  const onboardingSteps = [
+    {
+      title: 'Development environment',
+      detail: 'Frontend, backend, and PostgreSQL are running.',
+      done: true,
+    },
+    {
+      title: 'Secure API foundation',
+      detail: 'OIDC verification and protected APIs are tested.',
+      done: true,
+    },
+    {
+      title: 'Connect Supabase Auth',
+      detail: configured
+        ? 'Supabase is configured. Sign in to verify the complete flow.'
+        : 'Project URL and publishable key are still required.',
+      done: configured,
+    },
+    {
+      title: 'Create your first workspace',
+      detail: 'The workspace form will activate after authentication.',
+      done: false,
+    },
+    {
+      title: 'Upload a dataset',
+      detail: 'CSV and XLSX support follows the workspace flow.',
+      done: false,
+    },
+  ]
+  const completedOnboardingSteps = onboardingSteps.filter(
+    (step) => step.done,
+  ).length
 
   return (
     <div className="ai-shell min-h-screen bg-[#f8f5ff] text-[#251536] lg:grid lg:grid-cols-[248px_1fr]">
@@ -148,7 +185,11 @@ function App() {
           </button>
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3">
             <p className="text-xs font-medium text-white">Local development</p>
-            <p className="mt-1 text-[11px] leading-4 text-[#a792be]">Authentication provider setup is next.</p>
+            <p className="mt-1 text-[11px] leading-4 text-[#a792be]">
+              {configured
+                ? 'Supabase Auth is configured.'
+                : 'Supabase credentials are pending.'}
+            </p>
           </div>
         </div>
       </aside>
@@ -170,9 +211,33 @@ function App() {
               <span className={`size-2 rounded-full ${isReady ? 'bg-[#3eb875]' : serviceStatus === 'checking' ? 'animate-pulse bg-amber-400' : 'bg-rose-500'}`} />
               {isReady ? 'Systems online' : serviceStatus === 'checking' ? 'Checking systems' : 'Service unavailable'}
             </div>
-            <button type="button" disabled className="ai-button rounded-xl px-4 py-2 text-xs font-semibold text-white opacity-60">
-              Sign in soon
-            </button>
+            {user === null ? (
+              <button
+                type="button"
+                disabled={!configured || loading}
+                onClick={() => setAuthDialogOpen(true)}
+                className="ai-button rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(126,34,206,0.2)] disabled:cursor-not-allowed disabled:opacity-55"
+              >
+                {loading
+                  ? 'Loading…'
+                  : configured
+                    ? 'Sign in'
+                    : 'Auth setup pending'}
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="hidden max-w-48 truncate text-xs font-medium text-[#665575] md:block">
+                  {user.email}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => void signOut()}
+                  className="rounded-xl border border-[#ddcfeb] bg-white px-3 py-2 text-xs font-semibold text-[#6b2ca0]"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
@@ -230,16 +295,12 @@ function App() {
                   <h2 className="text-lg font-semibold tracking-[-0.02em]">Getting started</h2>
                   <p className="mt-1 text-sm text-[#81738e]">The path from foundation to your first analysis.</p>
                 </div>
-                <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">2 of 5 ready</span>
+                <span className="rounded-full bg-[#f1e9fb] px-3 py-1 text-[11px] font-semibold text-[#7136b5]">
+                  {completedOnboardingSteps} of {onboardingSteps.length} ready
+                </span>
               </div>
               <div className="mt-6 space-y-1">
-                {[
-                  { title: 'Development environment', detail: 'Frontend, backend, and PostgreSQL are running.', done: true },
-                  { title: 'Secure API foundation', detail: 'OIDC verification and current-user endpoint are tested.', done: true },
-                  { title: 'Connect an identity provider', detail: 'Required before testing protected workspace actions.', done: false },
-                  { title: 'Create your first workspace', detail: 'Workspace and project screens will follow authentication.', done: false },
-                  { title: 'Upload a dataset', detail: 'CSV and XLSX support comes after project APIs.', done: false },
-                ].map((step, index) => (
+                {onboardingSteps.map((step, index) => (
                   <div key={step.title} className="flex gap-4 rounded-xl p-3 hover:bg-[#faf7ff]">
                     <div className={`grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold ${step.done ? 'bg-[#ecddff] text-[#7c3aed]' : 'border border-[#e4d9ef] text-[#9585a3]'}`}>
                       {step.done ? '✓' : index + 1}
@@ -299,6 +360,10 @@ function App() {
           </section>
         </div>
       </main>
+      <AuthDialog
+        open={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+      />
     </div>
   )
 }

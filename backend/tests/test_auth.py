@@ -85,6 +85,19 @@ def test_verifier_accepts_valid_signed_token(rsa_keys) -> None:
     assert identity.display_name == "Managed User"
 
 
+def test_verifier_reads_supabase_display_name_metadata(rsa_keys) -> None:
+    private_key, public_key = rsa_keys
+    token = build_token(
+        private_key,
+        name=None,
+        user_metadata={"display_name": "Supabase User"},
+    )
+
+    identity = build_verifier(public_key).verify(token)
+
+    assert identity.display_name == "Supabase User"
+
+
 def test_verifier_rejects_wrong_audience(rsa_keys) -> None:
     private_key, public_key = rsa_keys
     token = build_token(private_key, aud="another-api")

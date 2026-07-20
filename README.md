@@ -24,6 +24,7 @@ advanced analytics remain outside the current foundation.
 - User, workspace, membership, and project domain models
 - Provider-neutral OIDC access-token verification through cached JWKS
 - Safe first-login user provisioning and identity-conflict protection
+- Supabase browser session provider and email/password authentication UI
 - Workspace-scoped repositories and role-aware project services
 - Protected workspace creation and membership-scoped listing API
 - Protected project creation and workspace-scoped listing API
@@ -31,9 +32,9 @@ advanced analytics remain outside the current foundation.
 - Backend unit and PostgreSQL integration tests
 - Dockerized local PostgreSQL with persistent storage
 
-An authentication boundary is implemented, but no managed identity provider is
-selected or configured yet. Protected project APIs, file upload, dataset
-analysis, and AI features are not implemented yet.
+Supabase Auth is selected as the managed identity provider. The integration is
+implemented, but local Project URL and publishable key values are still needed.
+File upload, dataset analysis, and AI features are not implemented yet.
 
 ## Repository structure
 
@@ -69,6 +70,11 @@ without committing the file:
 ```powershell
 Copy-Item .env.example .env
 ```
+
+For authentication, set `VITE_SUPABASE_URL` and
+`VITE_SUPABASE_PUBLISHABLE_KEY`, then derive the backend `AUTH_ISSUER` and
+`AUTH_JWKS_URL` from the same project URL. Never place a Supabase secret or
+service-role key in a `VITE_` variable.
 
 Start PostgreSQL:
 

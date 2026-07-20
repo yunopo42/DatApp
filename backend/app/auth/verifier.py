@@ -78,6 +78,11 @@ class OIDCTokenVerifier:
 
         email_claim = claims.get("email")
         name_claim = claims.get("name")
+        user_metadata_claim = claims.get("user_metadata")
+        if not isinstance(name_claim, str) and isinstance(user_metadata_claim, dict):
+            name_claim = user_metadata_claim.get("display_name") or (
+                user_metadata_claim.get("full_name")
+            )
         email = email_claim if isinstance(email_claim, str) else None
         display_name = name_claim if isinstance(name_claim, str) else None
 
