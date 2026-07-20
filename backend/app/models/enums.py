@@ -19,5 +19,25 @@ class ProjectStatus(StrEnum):
     ARCHIVED = "archived"
 
 
+class DatasetStatus(StrEnum):
+    PENDING = "pending"
+    UPLOADED = "uploaded"
+    VALIDATING = "validating"
+    READY = "ready"
+    FAILED = "failed"
+    ARCHIVED = "archived"
+
+
+class StoredFileKind(StrEnum):
+    CSV = "csv"
+    XLSX = "xlsx"
+
+
+class StoredFileStatus(StrEnum):
+    PENDING = "pending"
+    AVAILABLE = "available"
+    DELETED = "deleted"
+
+
 def enum_values(enum_class: type[StrEnum]) -> list[str]:
     return [member.value for member in enum_class]

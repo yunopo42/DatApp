@@ -9,6 +9,7 @@ from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 from app.models.enums import UserStatus, enum_values
 
 if TYPE_CHECKING:
+    from app.models.dataset import Dataset, StoredFile
     from app.models.project import Project
     from app.models.workspace import Workspace, WorkspaceMember
 
@@ -63,4 +64,12 @@ class User(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     created_projects: Mapped[list["Project"]] = relationship(
         back_populates="creator",
         foreign_keys="Project.created_by",
+    )
+    created_datasets: Mapped[list["Dataset"]] = relationship(
+        back_populates="creator",
+        foreign_keys="Dataset.created_by",
+    )
+    uploaded_files: Mapped[list["StoredFile"]] = relationship(
+        back_populates="uploader",
+        foreign_keys="StoredFile.created_by",
     )

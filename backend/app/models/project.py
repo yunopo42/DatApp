@@ -9,6 +9,7 @@ from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 from app.models.enums import ProjectStatus, enum_values
 
 if TYPE_CHECKING:
+    from app.models.dataset import Dataset
     from app.models.user import User
     from app.models.workspace import Workspace
 
@@ -45,4 +46,9 @@ class Project(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     creator: Mapped["User"] = relationship(
         back_populates="created_projects",
         foreign_keys=[created_by],
+    )
+    datasets: Mapped[list["Dataset"]] = relationship(
+        back_populates="project",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

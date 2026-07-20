@@ -137,8 +137,8 @@ Acceptance criteria:
 
 ### M7 — Secure dataset upload and storage
 
-- [ ] Define dataset and stored-file database models.
-- [ ] Create and verify the required Alembic migration.
+- [x] Define dataset and stored-file database models.
+- [x] Create and verify the required Alembic migration.
 - [ ] Define file-size, extension, MIME, and filename policies.
 - [ ] Implement workspace/project-scoped CSV and XLSX upload.
 - [ ] Store files outside the public web root with generated identifiers.
