@@ -92,7 +92,15 @@ const navigation = [
 ]
 
 function App() {
-  const { configured, loading, user, signOut } = useAuth()
+  const {
+    configured,
+    loading,
+    user,
+    profile,
+    profileLoading,
+    profileError,
+    signOut,
+  } = useAuth()
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus>('checking')
   const [lastChecked, setLastChecked] = useState<string>('Checking now')
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
@@ -130,10 +138,17 @@ function App() {
     },
     {
       title: 'Connect Supabase Auth',
-      detail: configured
-        ? 'Supabase is configured. Sign in to verify the complete flow.'
-        : 'Project URL and publishable key are still required.',
-      done: configured,
+      detail:
+        user === null
+          ? configured
+            ? 'Supabase is configured. Sign in to verify the complete flow.'
+            : 'Project URL and publishable key are still required.'
+          : profileLoading
+            ? 'Verifying your session with the FastAPI backend.'
+            : profile !== null
+              ? 'Supabase session and backend profile are verified.'
+              : `Backend profile sync failed: ${profileError ?? 'Unknown error'}`,
+      done: profile !== null,
     },
     {
       title: 'Create your first workspace',

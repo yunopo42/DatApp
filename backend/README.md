@@ -50,8 +50,12 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-dev.txt
 python -m alembic upgrade head
-python -m uvicorn app.main:app --reload
+python -m app
 ```
+
+The application launcher selects an asyncio event loop compatible with async
+Psycopg on Windows before starting Uvicorn. On other platforms it keeps the
+platform default event loop.
 
 The repository-root `.env` file is loaded automatically. PostgreSQL must be
 running through `docker compose up -d database` from the repository root.

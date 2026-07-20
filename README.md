@@ -90,7 +90,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-dev.txt
 python -m alembic upgrade head
-python -m uvicorn app.main:app --reload
+python -m app
 ```
 
 In another PowerShell window, prepare and start the frontend:

@@ -2,11 +2,14 @@ import { useEffect, useState, type ReactNode } from 'react'
 import type { Session } from '@supabase/supabase-js'
 
 import { AuthContext, type AuthResult } from './auth-context'
+import { fetchCurrentUser, type CurrentUserProfile } from '../lib/api'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(isSupabaseConfigured)
+  const [profile, setProfile] = useState<CurrentUserProfile | null>(null)
+  const [profileError, setProfileError] = useState<string | null>(null)
 
   useEffect(() => {
     if (supabase === null) {
@@ -23,6 +26,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
+        setProfile(null)
+        setProfileError(null)
         setSession(nextSession)
         setLoading(false)
       },
@@ -33,6 +38,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       listener.subscription.unsubscribe()
     }
   }, [])
+
+  useEffect(() => {
+    if (session === null) {
+      return
+    }
+
+    const controller = new AbortController()
+
+    void fetchCurrentUser(session.access_token, controller.signal)
+      .then((currentProfile) => {
+        setProfile(currentProfile)
+        setProfileError(null)
+      })
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted) {
+          setProfile(null)
+          setProfileError(
+            error instanceof Error
+              ? error.message
+              : 'Unable to load your DatApp profile.',
+          )
+        }
+      })
+
+    return () => controller.abort()
+  }, [session])
+
+  const profileLoading =
+    session !== null && profile === null && profileError === null
 
   async function signIn(email: string, password: string): Promise<AuthResult> {
     if (supabase === null) {
@@ -78,6 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         session,
         user: session?.user ?? null,
+        profile,
+        profileLoading,
+        profileError,
         signIn,
         signUp,
         signOut,

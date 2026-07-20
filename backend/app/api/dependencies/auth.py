@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
@@ -18,6 +19,7 @@ from app.models import User
 from app.services.auth_user import AuthUserService
 
 bearer_scheme = HTTPBearer(auto_error=False)
+logger = logging.getLogger(__name__)
 
 
 async def get_current_identity(
@@ -34,7 +36,14 @@ async def get_current_identity(
         return await run_in_threadpool(verifier.verify, credentials.credentials)
     except AuthenticationError as exc:
         raise _unauthorized() from exc
-    except (AuthConfigurationError, AuthProviderUnavailableError) as exc:
+    except AuthConfigurationError as exc:
+        logger.error("Authentication configuration is incomplete")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication service unavailable",
+        ) from exc
+    except AuthProviderUnavailableError as exc:
+        logger.warning("Authentication provider JWKS is unavailable")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Authentication service unavailable",
