@@ -89,9 +89,9 @@ Goal: allow a signed-in user to create, list, and select a real workspace from
 the dashboard. No mock workspace data should remain when this milestone is
 complete.
 
-- [ ] **W-01:** Add a typed frontend API client for workspace list and create
+- [x] **W-01:** Add a typed frontend API client for workspace list and create
   requests using the current Supabase access token.
-- [ ] **W-02:** Load the signed-in user's workspaces and represent loading,
+- [x] **W-02:** Load the signed-in user's workspaces and represent loading,
   empty, error, and ready states.
 - [ ] **W-03:** Add a focused create-workspace form with name and URL-safe slug
   fields.

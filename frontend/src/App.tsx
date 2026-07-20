@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { AuthDialog, type AuthMode } from './auth/AuthDialog'
 import { useAuth } from './auth/useAuth'
+import { WorkspacePanel } from './workspaces/WorkspacePanel'
 
 type ServiceStatus = 'checking' | 'ready' | 'unavailable'
 type IconName =
@@ -95,6 +96,7 @@ function App() {
   const {
     configured,
     loading,
+    session,
     user,
     profile,
     profileLoading,
@@ -318,6 +320,10 @@ function App() {
               </article>
             ))}
           </section>
+
+          {session !== null && profile !== null && (
+            <WorkspacePanel accessToken={session.access_token} />
+          )}
 
           <section id="getting-started" className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
             <article className="ai-card rounded-2xl border border-[#e8dff2] bg-white/90 p-6 shadow-[0_10px_35px_rgba(76,29,149,0.06)] backdrop-blur">
