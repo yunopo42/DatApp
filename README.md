@@ -1,5 +1,8 @@
 # DatApp
 
+Development progress and the ordered implementation roadmap are tracked in
+[`TASKS.md`](TASKS.md).
+
 DatApp is a modular-monolith web application for uploading tabular datasets,
 assessing data quality, calculating statistics, creating visualizations, and
 exporting reproducible analysis results.
@@ -135,9 +138,10 @@ npm run build
 2. Typed backend configuration and health checks — completed
 3. PostgreSQL, SQLAlchemy, and Alembic foundation — completed
 4. Identity, workspace, and project data foundation — completed
-5. Authentication and authorization boundaries — backend boundary completed,
-   provider integration and protected APIs pending
-6. Project application services — create/list API completed
+5. Authentication and authorization boundaries — Supabase integration and
+   protected APIs completed
+6. Workspace and project application services — create/list APIs completed,
+   frontend workspace experience in progress
 7. Secure CSV/XLSX upload and storage
 8. Dataset validation, preview, and column detection
 9. Data-quality profiling and basic statistics
