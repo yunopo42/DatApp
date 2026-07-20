@@ -26,6 +26,8 @@ Last verified: 2026-07-20
   the local PostgreSQL user record have been verified end to end.
 - The browser dashboard reports frontend online, backend online, and database
   healthy without console errors.
+- Workspace creation, refresh, sign-out, and sign-in persistence have been
+  verified in the browser against live PostgreSQL data.
 
 ## Completed milestones
 
@@ -81,7 +83,7 @@ Last verified: 2026-07-20
 - [x] Synchronize the frontend session with `GET /api/v1/auth/me`.
 - [x] Display a safe backend profile verification state in onboarding.
 
-## Current milestone
+## Recently completed milestone
 
 ### M5 — Authenticated workspace experience
 
@@ -100,7 +102,7 @@ complete.
   selected.
 - [x] **W-06:** Replace the placeholder workspace onboarding step with live
   completion state.
-- [ ] **W-07:** Verify create, refresh, sign-out, and sign-in persistence in the
+- [x] **W-07:** Verify create, refresh, sign-out, and sign-in persistence in the
   browser.
 
 Acceptance criteria:
@@ -111,7 +113,7 @@ Acceptance criteria:
 - Refreshing the page preserves the workspace through PostgreSQL persistence.
 - Frontend lint/build and all backend checks still pass.
 
-## Planned milestones
+## Current milestone
 
 ### M6 — Project experience
 
@@ -120,6 +122,8 @@ Acceptance criteria:
 - [ ] Add a create-project form with name and optional description.
 - [ ] Respect owner, admin, editor, and viewer permissions in the UI.
 - [ ] Replace dashboard project placeholders with live data.
+
+## Planned milestones
 
 ### M7 — Secure dataset upload and storage
 
