@@ -147,7 +147,49 @@ Acceptance criteria:
 
 ## Planned milestones
 
-### M8 — Dataset validation and preview
+### M8 — Workspace collaboration and resource lifecycle
+
+- [ ] Define and document the complete owner, admin, editor, and viewer
+  permission matrix for workspaces, projects, datasets, and memberships.
+- [ ] Add workspace edit operations with safe name and slug-change rules.
+- [ ] Add project edit, archive, restore, and delete operations.
+- [ ] Add dataset rename, download, replace, and delete operations with atomic
+  database and stored-file cleanup.
+- [ ] Add role-aware overflow menus to workspace, project, and dataset cards.
+- [ ] Allow owner and admin roles to manage members; prevent editor and viewer
+  roles from changing membership or destructive workspace settings.
+- [ ] Allow non-owner members to leave a workspace and require the owner to
+  transfer ownership before leaving.
+- [ ] Define project-level membership or explicit access overrides so a user
+  can leave one project without leaving the entire workspace.
+- [ ] Create cryptographically random, human-readable workspace invitation
+  codes with hashed storage, expiry, usage limits, and revocation.
+- [ ] Allow owner and admin roles to issue invitation codes for viewer or editor
+  access only; never grant owner or admin through a redeemable code.
+- [ ] Add authenticated, rate-limited invitation redemption with duplicate
+  membership protection and safe error messages.
+- [ ] Add member listing, role changes, removal, invite management, and join/
+  leave history to the workspace UI.
+- [ ] Require an impact preview and typed workspace-name confirmation before an
+  owner or admin can delete a workspace.
+- [ ] Implement recoverable workspace deletion with retention, cleanup, and
+  protection against orphaned database records or stored files.
+- [ ] Record auditable events for invitations, joins, leaves, role changes,
+  edits, archives, restores, and destructive operations.
+- [ ] Test permission boundaries, last-owner protection, expired/revoked/
+  exhausted codes, rate limits, concurrent redemption, and cleanup failures.
+
+Acceptance criteria:
+
+- Every card action is derived from the authenticated user's effective role.
+- Members can leave the correct scope without gaining or retaining unintended
+  access.
+- Invitation codes cannot be guessed, reused beyond policy, elevated to admin,
+  or recovered from the database.
+- Destructive operations clearly show their impact and cannot leave orphaned
+  data or files.
+
+### M9 — Dataset validation and preview
 
 - [ ] Detect CSV encoding and delimiter safely.
 - [ ] Read CSV data with Polars.
@@ -157,7 +199,7 @@ Acceptance criteria:
   browser.
 - [ ] Report row-level and column-level validation problems.
 
-### M9 — Deterministic analysis and data quality
+### M10 — Deterministic analysis and data quality
 
 - [ ] Calculate missing-value, uniqueness, duplicate, and type-quality metrics.
 - [ ] Produce descriptive statistics for supported column types.
@@ -165,14 +207,14 @@ Acceptance criteria:
 - [ ] Persist analysis runs and deterministic results.
 - [ ] Display progress, success, and failure states.
 
-### M10 — Visualization and export
+### M11 — Visualization and export
 
 - [ ] Recommend chart types from deterministic column metadata.
 - [ ] Build interactive charts from verified analysis results.
 - [ ] Export selected results to CSV and XLSX.
 - [ ] Add report-ready summaries and safe download endpoints.
 
-### M11 — Predictive modeling foundation
+### M12 — Predictive modeling foundation
 
 Design reference: [Predictive Modeling Design](docs/PREDICTIVE_MODELING.md)
 
@@ -196,7 +238,7 @@ Design reference: [Predictive Modeling Design](docs/PREDICTIVE_MODELING.md)
 - [ ] Test workspace isolation, role permissions, leakage prevention,
   reproducibility, failure cleanup, and artifact access.
 
-### M12 — Advanced modeling and model lifecycle
+### M13 — Advanced modeling and model lifecycle
 
 - [ ] Add time-aware validation and forecasting for suitable ordered datasets.
 - [ ] Add clustering and anomaly-detection workflows with suitable evaluation
@@ -208,7 +250,7 @@ Design reference: [Predictive Modeling Design](docs/PREDICTIVE_MODELING.md)
 - [ ] Add scheduled batch prediction and retraining policies with explicit user
   control.
 
-### M13 — Stabilization and deployment readiness
+### M14 — Stabilization and deployment readiness
 
 - [ ] Add frontend component and API integration tests.
 - [ ] Expand backend tests for upload and analysis failure paths.
