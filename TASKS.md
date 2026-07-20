@@ -160,7 +160,43 @@ Acceptance criteria:
 - [ ] Export selected results to CSV and XLSX.
 - [ ] Add report-ready summaries and safe download endpoints.
 
-### M11 — Stabilization and deployment readiness
+### M11 — Predictive modeling foundation
+
+Design reference: [Predictive Modeling Design](docs/PREDICTIVE_MODELING.md)
+
+- [ ] Define experiment, training-run, model-artifact, and prediction-run
+  records scoped through workspace, project, and dataset ownership.
+- [ ] Add regression and classification problem definitions with explicit
+  target, feature, metric, and split configuration.
+- [ ] Validate minimum row counts, target suitability, class balance, missing
+  values, and unsupported feature types before training.
+- [ ] Build leak-resistant scikit-learn preprocessing and baseline pipelines.
+- [ ] Support reproducible train/test splits and cross-validation with stored
+  random seeds, package versions, parameters, and dataset identity.
+- [ ] Calculate problem-appropriate metrics and compare every trained model
+  with a simple baseline.
+- [ ] Run training outside request handlers with queued, running, succeeded,
+  failed, and cancelled states.
+- [ ] Present model comparison, limitations, feature importance, and safe error
+  messages in the UI.
+- [ ] Store only server-generated model artifacts and generate batch
+  predictions for compatible datasets.
+- [ ] Test workspace isolation, role permissions, leakage prevention,
+  reproducibility, failure cleanup, and artifact access.
+
+### M12 — Advanced modeling and model lifecycle
+
+- [ ] Add time-aware validation and forecasting for suitable ordered datasets.
+- [ ] Add clustering and anomaly-detection workflows with suitable evaluation
+  summaries.
+- [ ] Add controlled hyperparameter search with resource and time limits.
+- [ ] Track model versions, promotion, archival, and prediction lineage.
+- [ ] Detect input-schema drift and report model performance when labels become
+  available.
+- [ ] Add scheduled batch prediction and retraining policies with explicit user
+  control.
+
+### M13 — Stabilization and deployment readiness
 
 - [ ] Add frontend component and API integration tests.
 - [ ] Expand backend tests for upload and analysis failure paths.
@@ -179,7 +215,7 @@ Do not start these items until their milestone is explicitly activated:
 - Authentication providers beyond the planned email/password flow
 - AI-assisted insights
 - Subscription plans, billing, and payment integration
-- Advanced analytics beyond the deterministic analysis foundation
+- Deep learning, custom user-supplied training code, and unrestricted AutoML
 
 ## Local development note
 
